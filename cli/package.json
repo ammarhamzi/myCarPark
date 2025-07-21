@@ -1,0 +1,64 @@
+{
+  "name": "jlaunch",
+  "version": "0.1.5",
+  "description": "Interactive CLI for JBoilerplate projects - A modern Vue 3 boilerplate with TypeScript, Shadcn UI, and flexible database options",
+  "type": "module",
+  "bin": {
+    "jlaunch": "./dist/index.js"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "start": "node ./dist/index.js",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "cli",
+    "jboilerplate",
+    "vue",
+    "vue3",
+    "typescript",
+    "boilerplate",
+    "shadcn",
+    "starter",
+    "template",
+    "interactive",
+    "setup"
+  ],
+  "author": {
+    "name": "Infyra Ventures",
+    "email": "infyra.dev@proton.me",
+    "url": "https://github.com/infyramy"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/infyramy/jBoilerplate"
+  },
+  "bugs": {
+    "url": "https://github.com/infyramy/jBoilerplate/issues"
+  },
+  "homepage": "https://github.com/infyramy/jBoilerplate#readme",
+  "license": "MIT",
+  "dependencies": {
+    "chalk": "^5.2.0",
+    "commander": "^10.0.1",
+    "dotenv": "^16.5.0",
+    "figlet": "^1.6.0",
+    "inquirer": "^9.2.7",
+    "ora": "^6.3.1"
+  },
+  "devDependencies": {
+    "@types/figlet": "^1.7.0",
+    "@types/inquirer": "^9.0.8",
+    "@types/node": "^18.16.17",
+    "typescript": "~5.0.4"
+  },
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=7.0.0"
+  }
+}

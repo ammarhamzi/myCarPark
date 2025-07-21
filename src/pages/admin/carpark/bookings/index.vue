@@ -1,0 +1,198 @@
+<template>
+  <div class="space-y-6">
+    <div class="flex items-center justify-between">
+      <div>
+        <h1 class="text-3xl font-bold tracking-tight">Booking Management</h1>
+        <p class="text-muted-foreground">
+          Manage all parking reservations and bookings
+        </p>
+      </div>
+      <Button @click="createBooking">
+        <PlusIcon class="w-4 h-4 mr-2" />
+        Create Booking
+      </Button>
+    </div>
+
+    <!-- Filters -->
+    <Card>
+      <CardContent class="p-6">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div>
+            <Label for="status">Status</Label>
+            <select v-model="filters.status" class="w-full border rounded px-2 py-1">
+              <option value="">All Statuses</option>
+              <option value="pending">Pending</option>
+              <option value="confirmed">Confirmed</option>
+              <option value="checked_in">Checked In</option>
+              <option value="checked_out">Checked Out</option>
+              <option value="cancelled">Cancelled</option>
+            </select>
+          </div>
+          <div>
+            <Label for="type">Parking Type</Label>
+            <select v-model="filters.parking_type" class="w-full border rounded px-2 py-1">
+              <option value="">All Types</option>
+              <option value="open_air">Open Air</option>
+              <option value="covered">Covered</option>
+            </select>
+          </div>
+          <div>
+            <Label for="date-from">Date From</Label>
+            <Input id="date-from" v-model="filters.date_from" type="date" />
+          </div>
+          <div>
+            <Label for="date-to">Date To</Label>
+            <Input id="date-to" v-model="filters.date_to" type="date" />
+          </div>
+        </div>
+        <div class="flex gap-2 mt-4">
+          <Button @click="applyFilters">
+            <SearchIcon class="w-4 h-4 mr-2" />
+            Apply Filters
+          </Button>
+          <Button variant="outline" @click="clearFilters">
+            <XIcon class="w-4 h-4 mr-2" />
+            Clear
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
+
+    <!-- Bookings Table -->
+    <Card>
+      <CardHeader>
+        <CardTitle>All Bookings</CardTitle>
+        <CardDescription>
+          {{ filteredBookings.length }} bookings found
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div class="overflow-x-auto">
+          <table class="min-w-full border text-sm">
+            <thead>
+              <tr class="bg-muted">
+                <th class="px-3 py-2 text-left">Reference</th>
+                <th class="px-3 py-2 text-left">Customer</th>
+                <th class="px-3 py-2 text-left">Plate</th>
+                <th class="px-3 py-2 text-left">Check-in</th>
+                <th class="px-3 py-2 text-left">Check-out</th>
+                <th class="px-3 py-2 text-left">Type</th>
+                <th class="px-3 py-2 text-left">Status</th>
+                <th class="px-3 py-2 text-left">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="booking in filteredBookings" :key="booking.id" class="border-b hover:bg-muted/50">
+                <td class="px-3 py-2 font-mono">{{ booking.booking_reference }}</td>
+                <td class="px-3 py-2">{{ booking.customer?.fullname || 'Customer' }}</td>
+                <td class="px-3 py-2">{{ booking.vehicle?.plate_number }}</td>
+                <td class="px-3 py-2">{{ formatDate(booking.scheduled_check_in) }}</td>
+                <td class="px-3 py-2">{{ formatDate(booking.scheduled_check_out) }}</td>
+                <td class="px-3 py-2 capitalize">{{ booking.parking_type }}</td>
+                <td class="px-3 py-2">
+                  <Badge :variant="getStatusVariant(booking.status)">
+                    {{ booking.status }}
+                  </Badge>
+                </td>
+                <td class="px-3 py-2 flex gap-1">
+                  <Button size="xs" variant="outline" @click="viewBooking(booking)">View</Button>
+                  <Button size="xs" variant="ghost" @click="editBooking(booking)">Edit</Button>
+                  <Button size="xs" variant="destructive" @click="deleteBooking(booking)">Delete</Button>
+                </td>
+              </tr>
+              <tr v-if="filteredBookings.length === 0">
+                <td colspan="8" class="text-center py-8 text-muted-foreground">No bookings found</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </CardContent>
+    </Card>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref, computed, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Badge } from '@/components/ui/badge';
+import { PlusIcon, SearchIcon, XIcon } from 'lucide-vue-next';
+import type { Booking, BookingStatus, ParkingSpaceType } from '@/types/carpark';
+
+const router = useRouter();
+
+const filters = ref({
+  status: '',
+  parking_type: '',
+  date_from: '',
+  date_to: ''
+});
+
+const bookings = ref<Booking[]>([{
+  id: 1,
+  booking_reference: 'BK001',
+  status: 'confirmed',
+  scheduled_check_in: new Date().toISOString(),
+  scheduled_check_out: new Date(Date.now() + 86400000).toISOString(),
+  total_amount: 45.50,
+  parking_type: 'open_air',
+  customer: { fullname: 'Ahmad Rahman' },
+  vehicle: { plate_number: 'ABC1234' }
+}, {
+  id: 2,
+  booking_reference: 'BK002',
+  status: 'checked_in',
+  scheduled_check_in: new Date(Date.now() - 3600000).toISOString(),
+  scheduled_check_out: new Date(Date.now() + 7200000).toISOString(),
+  total_amount: 67.00,
+  parking_type: 'covered',
+  customer: { fullname: 'Sarah Lee' },
+  vehicle: { plate_number: 'XYZ5678' }
+}]);
+
+const filteredBookings = computed(() => {
+  return bookings.value.filter(b => {
+    const statusMatch = !filters.value.status || b.status === filters.value.status;
+    const typeMatch = !filters.value.parking_type || b.parking_type === filters.value.parking_type;
+    const fromMatch = !filters.value.date_from || b.scheduled_check_in >= filters.value.date_from;
+    const toMatch = !filters.value.date_to || b.scheduled_check_out <= filters.value.date_to;
+    return statusMatch && typeMatch && fromMatch && toMatch;
+  });
+});
+
+function formatDate(dateString: string) {
+  return new Date(dateString).toLocaleString('en-MY', {
+    year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'
+  });
+}
+function getStatusVariant(status: string) {
+  switch (status) {
+    case 'confirmed': return 'default';
+    case 'checked_in': return 'secondary';
+    case 'pending': return 'outline';
+    case 'cancelled': return 'destructive';
+    default: return 'outline';
+  }
+}
+function applyFilters() {}
+function clearFilters() {
+  filters.value = { status: '', parking_type: '', date_from: '', date_to: '' };
+}
+function createBooking() {
+  router.push({ name: 'admin-carpark-booking-create' });
+}
+function viewBooking(booking: Booking) {
+  router.push({ name: 'admin-carpark-booking-detail', params: { id: booking.id } });
+}
+function editBooking(booking: Booking) {
+  alert('Edit booking feature coming soon!');
+}
+function deleteBooking(booking: Booking) {
+  if (confirm('Are you sure you want to delete this booking?')) {
+    bookings.value = bookings.value.filter(b => b.id !== booking.id);
+  }
+}
+</script> 
