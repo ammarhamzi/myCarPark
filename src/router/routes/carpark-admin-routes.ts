@@ -66,6 +66,17 @@ export const carparkAdminRoutes: RouteRecordRaw[] = [
     }
   },
   {
+    path: '/admin/carpark/spaces/layout-editor',
+    name: 'admin-carpark-spaces-layout-editor',
+    component: () => import('@/pages/admin/carpark/spaces/layout-editor.vue'),
+    meta: {
+      requiresAuth: true,
+      roles: ['admin', 'superadmin'],
+      layout: 'dashboard',
+      title: 'Layout Editor'
+    }
+  },
+  {
     path: '/admin/carpark/spaces/:id',
     name: 'admin-carpark-space-detail',
     component: () => import('@/pages/admin/carpark/spaces/detail.vue'),

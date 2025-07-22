@@ -18,13 +18,15 @@
           <tbody>
             <tr v-for="(row, rowIndex) in grid" :key="rowIndex">
               <td v-for="(block, colIndex) in row" :key="colIndex" class="p-1">
-                <ParkingBlock
-                  v-if="block"
-                  :block="block"
-                  :edit-mode="editMode"
-                  @edit="editBlock(block)"
-                  @remove="removeBlock(block)"
-                />
+                <div v-if="block" class="w-16 h-16 flex flex-col items-center justify-center rounded border cursor-pointer" :class="{
+                  'bg-green-600/80 text-white': block.status === 'available',
+                  'bg-red-600/80 text-white': block.status === 'occupied',
+                  'bg-blue-600/80 text-white': block.status === 'reserved',
+                  'bg-gray-700/80 text-white': block.status === 'maintenance'
+                }" @click="editBlock(block)">
+                  <span class="font-bold">{{ block.label }}</span>
+                  <span class="text-xs capitalize">{{ block.status }}</span>
+                </div>
                 <Button v-else-if="editMode" size="sm" variant="ghost" class="w-16 h-16" @click="addBlock(rowIndex, colIndex)">+</Button>
                 <div v-else class="w-16 h-16"></div>
               </td>
@@ -33,12 +35,30 @@
         </table>
       </div>
     </div>
-    <EditBlockDialog v-model:open="showDialog" :block="selectedBlock" @save="saveBlockEdit" />
+    <div v-if="showDialog && selectedBlock" class="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+      <div class="bg-white dark:bg-gray-900 p-6 rounded shadow-lg w-80">
+        <h2 class="text-lg font-bold mb-4">Edit Block</h2>
+        <div class="mb-2">
+          <label class="block text-sm mb-1">Label</label>
+          <input v-model="selectedBlock.label" class="w-full border rounded px-2 py-1" />
+        </div>
+        <div class="mb-2">
+          <label class="block text-sm mb-1">Status</label>
+          <select v-model="selectedBlock.status" class="w-full border rounded px-2 py-1">
+            <option v-for="status in statuses" :value="status">{{ status }}</option>
+          </select>
+        </div>
+        <div class="flex gap-2 mt-4">
+          <Button variant="default" @click="saveBlockEdit">Save</Button>
+          <Button variant="outline" @click="showDialog = false">Cancel</Button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { Button } from '@/components/ui/button';
 
 // Block and layout types
@@ -59,7 +79,10 @@ interface ParkingBlockData {
 const editMode = ref(true);
 const rows = ref(defaultRows);
 const cols = ref(defaultCols);
-const layout = ref<ParkingBlockData[]>([]);
+const layout = ref<ParkingBlockData[]>([
+  // Add a default block for demo
+  { id: 'A01', label: 'A01', row: 0, col: 0, status: 'available' }
+]);
 
 // Dialog state
 const showDialog = ref(false);
@@ -105,9 +128,10 @@ function editBlock(block: ParkingBlockData) {
   selectedBlock.value = { ...block };
   showDialog.value = true;
 }
-function saveBlockEdit(updated: ParkingBlockData) {
-  const idx = layout.value.findIndex(b => b.row === updated.row && b.col === updated.col);
-  if (idx !== -1) layout.value[idx] = { ...updated };
+function saveBlockEdit() {
+  if (!selectedBlock.value) return;
+  const idx = layout.value.findIndex(b => b.row === selectedBlock.value!.row && b.col === selectedBlock.value!.col);
+  if (idx !== -1) layout.value[idx] = { ...selectedBlock.value };
   showDialog.value = false;
 }
 function saveLayout() {
@@ -125,77 +149,4 @@ function loadLayout() {
     cols.value = Math.max(cols.value, maxCol + 1);
   }
 }
-
-// Block component
-const ParkingBlock = defineComponent({
-  props: {
-    block: Object,
-    editMode: Boolean
-  },
-  emits: ['edit', 'remove'],
-  setup(props, { emit }) {
-    function onEdit() {
-      emit('edit', props.block);
-    }
-    function onRemove() {
-      emit('remove', props.block);
-    }
-    return () => (
-      <div class={['w-16 h-16 flex flex-col items-center justify-center rounded border cursor-pointer',
-        props.block.status === 'available' ? 'bg-green-600/80 text-white' :
-        props.block.status === 'occupied' ? 'bg-red-600/80 text-white' :
-        props.block.status === 'reserved' ? 'bg-blue-600/80 text-white' :
-        'bg-gray-700/80 text-white']}
-        onClick={props.editMode ? onEdit : undefined}
-      >
-        <span class="font-bold">{props.block.label}</span>
-        <span class="text-xs capitalize">{props.block.status}</span>
-        {props.editMode && <Button size="xs" variant="ghost" class="mt-1" onClick={onRemove}>🗑️</Button>}
-      </div>
-    );
-  }
-});
-
-// Edit dialog component
-const EditBlockDialog = defineComponent({
-  props: {
-    open: Boolean,
-    block: Object
-  },
-  emits: ['update:open', 'save'],
-  setup(props, { emit }) {
-    const local = ref({ ...props.block });
-    watch(() => props.block, (val) => {
-      Object.assign(local.value, val);
-    });
-    function close() {
-      emit('update:open', false);
-    }
-    function save() {
-      emit('save', { ...local.value });
-      close();
-    }
-    return () => props.open && props.block && (
-      <div class="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-        <div class="bg-white dark:bg-gray-900 p-6 rounded shadow-lg w-80">
-          <h2 class="text-lg font-bold mb-4">Edit Block</h2>
-          <div class="mb-2">
-            <label class="block text-sm mb-1">Label</label>
-            <input v-model={local.value.label} class="w-full border rounded px-2 py-1" />
-          </div>
-          <div class="mb-2">
-            <label class="block text-sm mb-1">Status</label>
-            <select v-model={local.value.status} class="w-full border rounded px-2 py-1">
-              {statuses.map(s => <option value={s}>{s}</option>)}
-            </select>
-          </div>
-          <div class="flex gap-2 mt-4">
-            <Button variant="default" onClick={save}>Save</Button>
-            <Button variant="outline" onClick={close}>Cancel</Button>
-          </div>
-        </div>
-      </div>
-    );
-  }
-});
 </script> 

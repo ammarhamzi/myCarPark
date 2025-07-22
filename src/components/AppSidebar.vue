@@ -1,23 +1,13 @@
 <script setup lang="ts">
-import type { SidebarProps } from '@/components/ui/sidebar'
-
 import {
-  AudioWaveform,
-  BookOpen,
-  Bot,
-  Command,
-  Frame,
-  GalleryVerticalEnd,
-  Map,
-  PieChart,
+  Home,
+  CalendarCheck,
+  ParkingCircle,
+  Users,
   Settings2,
-  SquareTerminal,
 } from 'lucide-vue-next'
 import NavMain from '@/components/NavMain.vue'
-import NavProjects from '@/components/NavProjects.vue'
 import NavUser from '@/components/NavUser.vue'
-import TeamSwitcher from '@/components/TeamSwitcher.vue'
-
 import {
   Sidebar,
   SidebarContent,
@@ -26,152 +16,59 @@ import {
   SidebarRail,
 } from '@/components/ui/sidebar'
 
-const props = withDefaults(defineProps<SidebarProps>(), {
-  collapsible: 'icon',
-})
-
-// This is sample data.
-const data = {
-  user: {
-    name: 'shadcn',
-    email: 'm@example.com',
-    avatar: '/avatars/shadcn.jpg',
+const navMain = [
+  {
+    title: 'Dashboard',
+    url: '/admin/dashboard',
+    icon: Home,
+    isActive: false,
+    items: [],
   },
-  teams: [
-    {
-      name: 'Acme Inc',
-      logo: GalleryVerticalEnd,
-      plan: 'Enterprise',
-    },
-    {
-      name: 'Acme Corp.',
-      logo: AudioWaveform,
-      plan: 'Startup',
-    },
-    {
-      name: 'Evil Corp.',
-      logo: Command,
-      plan: 'Free',
-    },
-  ],
-  navMain: [
-    {
-      title: 'Playground',
-      url: '#',
-      icon: SquareTerminal,
-      isActive: true,
-      items: [
-        {
-          title: 'History',
-          url: '#',
-        },
-        {
-          title: 'Starred',
-          url: '#',
-        },
-        {
-          title: 'Settings',
-          url: '#',
-        },
-      ],
-    },
-    {
-      title: 'Models',
-      url: '#',
-      icon: Bot,
-      items: [
-        {
-          title: 'Genesis',
-          url: '#',
-        },
-        {
-          title: 'Explorer',
-          url: '#',
-        },
-        {
-          title: 'Quantum',
-          url: '#',
-        },
-      ],
-    },
-    {
-      title: 'Documentation',
-      url: '#',
-      icon: BookOpen,
-      items: [
-        {
-          title: 'Introduction',
-          url: '#',
-        },
-        {
-          title: 'Get Started',
-          url: '#',
-        },
-        {
-          title: 'Tutorials',
-          url: '#',
-        },
-        {
-          title: 'Changelog',
-          url: '#',
-        },
-      ],
-    },
-    {
-      title: 'Settings',
-      url: '#',
-      icon: Settings2,
-      items: [
-        {
-          title: 'General',
-          url: '#',
-        },
-        {
-          title: 'Team',
-          url: '#',
-        },
-        {
-          title: 'Billing',
-          url: '#',
-        },
-        {
-          title: 'Limits',
-          url: '#',
-        },
-      ],
-    },
-  ],
-  projects: [
-    {
-      name: 'Design Engineering',
-      url: '#',
-      icon: Frame,
-    },
-    {
-      name: 'Sales & Marketing',
-      url: '#',
-      icon: PieChart,
-    },
-    {
-      name: 'Travel',
-      url: '#',
-      icon: Map,
-    },
-  ],
+  {
+    title: 'Bookings',
+    url: '/admin/carpark/bookings',
+    icon: CalendarCheck,
+    isActive: false,
+    items: [],
+  },
+  {
+    title: 'Spaces',
+    url: '/admin/carpark/spaces',
+    icon: ParkingCircle,
+    isActive: false,
+    items: [],
+  },
+  {
+    title: 'Users',
+    url: '/admin/users',
+    icon: Users,
+    isActive: false,
+    items: [],
+  },
+  {
+    title: 'Settings',
+    url: '/admin/settings',
+    icon: Settings2,
+    isActive: false,
+    items: [],
+  },
+]
+
+const user = {
+  name: 'Admin',
+  email: 'admin@example.com',
+  avatar: '/avatars/default.jpg',
 }
 </script>
 
 <template>
-  <Sidebar v-bind="props">
-    <SidebarHeader>
-      <TeamSwitcher :teams="data.teams" />
-    </SidebarHeader>
+  <Sidebar>
+    <SidebarHeader />
     <SidebarContent>
-      <NavMain :items="data.navMain" />
-      <NavProjects :projects="data.projects" />
+      <NavMain :items="navMain" />
     </SidebarContent>
     <SidebarFooter>
-      <NavUser :user="data.user" />
+      <NavUser :user="user" />
     </SidebarFooter>
     <SidebarRail />
   </Sidebar>

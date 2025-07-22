@@ -22,7 +22,6 @@
                   <SelectItem value="suv">SUV</SelectItem>
                   <SelectItem value="mpv">MPV</SelectItem>
                   <SelectItem value="hatchback">Hatchback</SelectItem>
-                  <SelectItem value="coupe">Coupe</SelectItem>
                 </SelectContent>
               </Select>
             </div>
