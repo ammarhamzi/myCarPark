@@ -185,6 +185,88 @@
     --sidebar-border: 0 0% 92.1569%;
     --sidebar-ring: 0 0% 70.9804%;
   }
+
+  [data-color-scheme="pro"] {
+    --background: 220 20% 98%; /* very light gray-blue */
+    --foreground: 220 15% 20%; /* deep slate */
+    --card: 0 0% 100%;
+    --card-foreground: 220 15% 20%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 15% 20%;
+    --primary: 222 80% 56%; /* modern blue */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 220 14% 94%; /* light gray */
+    --secondary-foreground: 222 80% 56%;
+    --muted: 220 14% 94%;
+    --muted-foreground: 220 10% 50%;
+    --accent: 200 100% 92%; /* soft blue accent */
+    --accent-foreground: 222 80% 56%;
+    --destructive: 0 80% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --success: 145 63% 42%;
+    --success-foreground: 0 0% 100%;
+    --warning: 40 100% 60%;
+    --warning-foreground: 0 0% 20%;
+    --border: 220 14% 90%;
+    --input: 220 14% 90%;
+    --ring: 222 80% 56%;
+    --chart-1: 222 80% 56%;
+    --chart-2: 200 100% 92%;
+    --chart-3: 145 63% 42%;
+    --chart-4: 40 100% 60%;
+    --chart-5: 0 80% 60%;
+    --radius: 0.5rem;
+    --sidebar-background: 220 20% 98%;
+    --sidebar-foreground: 220 15% 20%;
+    --sidebar-primary: 222 80% 56%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 200 100% 92%;
+    --sidebar-accent-foreground: 222 80% 56%;
+    --sidebar-border: 220 14% 90%;
+    --sidebar-ring: 222 80% 56%;
+    font-family: 'Inter', 'Geist', 'Satoshi', 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif;
+  }
+
+  [data-color-scheme="pro"].dark {
+    --background: 220 15% 12%; /* deep blue-gray */
+    --foreground: 220 15% 92%; /* light slate */
+    --card: 220 15% 16%;
+    --card-foreground: 220 15% 92%;
+    --popover: 220 15% 16%;
+    --popover-foreground: 220 15% 92%;
+    --primary: 222 80% 66%; /* lighter blue for dark mode */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 220 10% 22%;
+    --secondary-foreground: 222 80% 66%;
+    --muted: 220 10% 22%;
+    --muted-foreground: 220 10% 60%;
+    --accent: 200 100% 24%;
+    --accent-foreground: 222 80% 66%;
+    --destructive: 0 80% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --success: 145 63% 52%;
+    --success-foreground: 0 0% 100%;
+    --warning: 40 100% 60%;
+    --warning-foreground: 0 0% 20%;
+    --border: 220 10% 22%;
+    --input: 220 10% 22%;
+    --ring: 222 80% 66%;
+    --chart-1: 222 80% 66%;
+    --chart-2: 200 100% 24%;
+    --chart-3: 145 63% 52%;
+    --chart-4: 40 100% 60%;
+    --chart-5: 0 80% 60%;
+    --radius: 0.5rem;
+    --sidebar-background: 220 15% 12%;
+    --sidebar-foreground: 220 15% 92%;
+    --sidebar-primary: 222 80% 66%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 200 100% 24%;
+    --sidebar-accent-foreground: 222 80% 66%;
+    --sidebar-border: 220 10% 22%;
+    --sidebar-ring: 222 80% 66%;
+    font-family: 'Inter', 'Geist', 'Satoshi', 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif;
+  }
 }
 
 @layer base {

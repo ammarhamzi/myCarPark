@@ -59,6 +59,7 @@ const colorSchemes = [
   { name: 'yellow', value: 'yellow', hsl: '47.9 95.8% 53.1%' },
   { name: 'violet', value: 'violet', hsl: '262.1 83.3% 57.8%' },
   { name: 'claude', value: 'claude', hsl: '35 68.0412% 38.0392%' },
+  { name: 'pro', value: 'pro', hsl: '222 80% 56%' }, // Professional theme
 ];
 
 // Available border radius options
@@ -179,6 +180,22 @@ function applyClaudeTheme() {
   document.body.style.letterSpacing = '-0.01em';
 }
 
+// Special function to apply the Pro theme comprehensively
+function applyProTheme() {
+  const root = document.documentElement;
+  // Clear any inline styles first
+  root.style.removeProperty('--primary');
+  root.style.removeProperty('--background');
+  root.style.removeProperty('--foreground');
+
+  // Set data attribute for Pro theme
+  root.setAttribute('data-color-scheme', 'pro');
+
+  // Update font settings for Pro theme
+  document.body.style.fontFamily = "Inter, Geist, Satoshi, Segoe UI, Roboto, Helvetica Neue, Arial, Liberation Sans, sans-serif";
+  document.body.style.letterSpacing = '-0.01em';
+}
+
 // Generate CSS for a color scheme (simplified implementation)
 function generateColorSchemeCSS(color: string) {
   const selectedColor = colorSchemes.find(c => c.value === color);
@@ -195,6 +212,8 @@ function generateColorSchemeCSS(color: string) {
   // For Claude theme specifically, we need to apply comprehensive changes
   if (color === 'claude') {
     applyClaudeTheme();
+  } else if (color === 'pro') {
+    applyProTheme();
   } else {
     // Reset font settings (use default theme fonts)
     document.body.style.fontFamily = '';

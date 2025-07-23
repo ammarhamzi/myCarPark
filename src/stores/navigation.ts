@@ -192,22 +192,16 @@ export const useNavigationStore = defineStore("navigation", () => {
       title: "Main",
       menu: [
         {
-          title: "Home",
-          url: "/admin/home",
+          title: "Dashboard",
+          url: "/admin/carpark/dashboard",
           icon: LayoutDashboard,
-          isActive: true,
+          isActive: false,
         }
       ],
     },
     {
       title: "Car Park Management",
       menu: [
-        {
-          title: "Dashboard",
-          url: "/admin/carpark/dashboard",
-          icon: LayoutDashboard,
-          isActive: false,
-        },
         {
           title: "Bookings",
           url: "/admin/carpark/bookings",

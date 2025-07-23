@@ -3,7 +3,7 @@ import type { RouteRecordRaw } from 'vue-router';
 export const adminRoutes: RouteRecordRaw[] = [
   {
     path: '/admin',
-    redirect: '/admin/home',
+    redirect: '/admin/carpark/dashboard',
     meta: {
       requiresAuth: true,
       roles: ['admin'],
@@ -11,19 +11,8 @@ export const adminRoutes: RouteRecordRaw[] = [
     }
   },
   {
-    path: '/admin/home',
-    name: 'admin-home',
-    component: () => import('@/pages/admin/dashboard/index.vue'),
-    meta: {
-      requiresAuth: true,
-      roles: ['admin'],
-      layout: 'dashboard',
-      title: 'Home'
-    }
-  },
-  {
     path: '/admin/dashboard',
-    redirect: '/admin/home',
+    redirect: '/admin/carpark/dashboard',
     meta: {
       requiresAuth: true,
       roles: ['admin'],
