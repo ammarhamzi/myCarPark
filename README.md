@@ -1,5 +1,13 @@
 # Car Park Management System
 
+## Vision & Motivation
+
+I lived very near to KLIA, so I noticed that there's many businesses that offer parking services for people who want to fly. Every day, travelers look for safe, convenient, and affordable places to park their cars while they're away. However, most of these parking businesses still rely on manual processes, WhatsApp bookings, and lack a modern, digital management system.
+
+This project was born out of the idea to bring a professional, enterprise-grade solution to the airport parking industry. The goal is to empower parking operators with a robust, beautiful, and easy-to-use platform—making it effortless to manage bookings, spaces, shuttles, car wash services, and more. Ultimately, I want to help both operators and travelers have a seamless, digital-first parking experience.
+
+---
+
 A modern, professional Vue 3 + TypeScript system for car park management, with a beautiful admin dashboard, advanced theming, and Docker support.
 
 ## Features
@@ -12,6 +20,13 @@ A modern, professional Vue 3 + TypeScript system for car park management, with a
 - Pinia state management, Vue Router, I18n
 - Database: MySQL, PostgreSQL, or SQLite (via Knex.js)
 - Dockerized for easy deployment
+
+## Coming Soon
+
+- WhatsApp integration for seamless customer communication and booking
+- AI-powered features (recommendations, analytics, smart pricing, etc.)
+- More integrations and automation tools
+- ...and more!
 
 ## Quick Start
 

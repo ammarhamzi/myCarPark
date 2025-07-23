@@ -60,6 +60,9 @@ const colorSchemes = [
   { name: 'violet', value: 'violet', hsl: '262.1 83.3% 57.8%' },
   { name: 'claude', value: 'claude', hsl: '35 68.0412% 38.0392%' },
   { name: 'pro', value: 'pro', hsl: '222 80% 56%' }, // Professional theme
+  { name: 'tenet', value: 'tenet', hsl: '278 100% 60%' }, // Futuristic theme
+  { name: 'pre', value: 'pre', hsl: '222 60% 48%' }, // Enterprise theme
+  { name: 'new', value: 'new', hsl: '220 100% 50%' }, // FNF theme
 ];
 
 // Available border radius options
